@@ -4,10 +4,10 @@ Este projeto é uma demonstração prática das capacidades do **Next.js 14+** u
 
 ## 🛠️ Tecnologias Utilizadas
 
-  * **Next.js 14+** (App Router)
-  * **TypeScript**
-  * **Tailwind CSS**
-  * **HeroUI** (Componentes de UI Modernos)
+* **Next.js 14+** (App Router)
+* **TypeScript**
+* **Tailwind CSS**
+* **HeroUI** (Componentes de UI Modernos)
 
 -----
 
@@ -48,32 +48,32 @@ npm start
 
 ### 1\. SSG (Static Site Generation) - `/ssg-blog`
 
-  * **Conceito:** O HTML é gerado **uma única vez** durante o comando `npm run build`.
-  * **Código:** `fetch` padrão (com cache).
-  * **Prova Real:** Observe o "Carimbo de Tempo" na página. Em produção, ele **não muda** mesmo que você atualize a página (F5), pois o HTML foi "congelado" no momento da construção.
+* **Conceito:** O HTML é gerado **uma única vez** durante o comando `npm run build`.
+* **Código:** `fetch` padrão (com cache).
+* **Prova Real:** Observe o "Carimbo de Tempo" na página. Em produção, ele **não muda** mesmo que você atualize a página (F5), pois o HTML foi "congelado" no momento da construção.
 
 ### 2\. SSR (Server-Side Rendering) - `/ssr-users`
 
-  * **Conceito:** O HTML é gerado pelo servidor **a cada requisição**.
-  * **Código:** `fetch(url, { cache: 'no-store' })`.
-  * **Prova Real:** O "Carimbo de Tempo" muda a cada atualização da página, e os dados são buscados novamente na API externa.
+* **Conceito:** O HTML é gerado pelo servidor **a cada requisição**.
+* **Código:** `fetch(url, { cache: 'no-store' })`.
+* **Prova Real:** O "Carimbo de Tempo" muda a cada atualização da página, e os dados são buscados novamente na API externa.
 
 ### 3\. Client Components - `/client-counter`
 
-  * **Conceito:** Componentes que permitem interatividade (cliques, estado local, `useEffect`).
-  * **Código:** Uso da diretiva `'use client'` no topo do arquivo.
-  * **Nota:** Eles ainda são pré-renderizados no servidor (HTML inicial) e depois "hidratados" no navegador para se tornarem interativos.
+* **Conceito:** Componentes que permitem interatividade (cliques, estado local, `useEffect`).
+* **Código:** Uso da diretiva `'use client'` no topo do arquivo.
+* **Nota:** Eles ainda são pré-renderizados no servidor (HTML inicial) e depois "hidratados" no navegador para se tornarem interativos.
 
 ### 4\. Loading UI & Streaming
 
-  * **Conceito:** Feedback visual instantâneo enquanto o servidor processa dados demorados (SSR).
-  * **Arquivo:** `loading.tsx`.
-  * **UI:** Utilizamos o componente `Spinner` do **HeroUI**.
+* **Conceito:** Feedback visual instantâneo enquanto o servidor processa dados demorados (SSR).
+* **Arquivo:** `loading.tsx`.
+* **UI:** Utilizamos o componente `Spinner` do **HeroUI**.
 
 ### 5\. Arquitetura de Providers
 
-  * **Desafio:** O `layout.tsx` é um Server Component e não pode usar Context API diretamente.
-  * **Solução:** Criamos um componente `providers.tsx` (Client Component) para envolver a aplicação com o `HeroUIProvider`, permitindo o uso da biblioteca de UI em toda a aplicação.
+* **Desafio:** O `layout.tsx` é um Server Component e não pode usar Context API diretamente.
+* **Solução:** Criamos um componente `providers.tsx` (Client Component) para envolver a aplicação com o `HeroUIProvider`, permitindo o uso da biblioteca de UI em toda a aplicação.
 
 -----
 
@@ -93,16 +93,3 @@ src/
     └── client-counter/   # Rota para exemplo Client Component
         └── page.tsx
 ```
-
------
-
-## 📝 Exercício Sugerido
-
-1.  Rode o projeto com `npm run build` e `npm start`.
-2.  Vá para a página **SSG (Blog)** e anote o horário gerado. Dê refresh 5 vezes. O horário mudou? (Não deve mudar).
-3.  Vá para a página **SSR (Users)** e anote o horário. Dê refresh. O horário mudou? (Sim, deve mudar).
-4.  Tente adicionar um `console.log('Onde estou?')` no componente `Home`. Procure a mensagem no console do navegador. Você a encontrou? (Não deve encontrar, pois Server Components rodam apenas no terminal do servidor).
-
------
-
-Desenvolvido para a aula de **Desenvolvimento Web Moderno**.
