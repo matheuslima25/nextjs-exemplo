@@ -1,36 +1,108 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Aula 09 - Next.js 14+ (App Router & Estratégias de Renderização)
 
-## Getting Started
+Este projeto é uma demonstração prática das capacidades do **Next.js 14+** utilizando o **App Router**. Ele exemplifica as diferenças fundamentais entre renderização estática (SSG), renderização no servidor (SSR) e interatividade no cliente (Client Components).
 
-First, run the development server:
+## 🛠️ Tecnologias Utilizadas
+
+  * **Next.js 14+** (App Router)
+  * **TypeScript**
+  * **Tailwind CSS**
+  * **HeroUI** (Componentes de UI Modernos)
+
+-----
+
+## 🚀 Como Rodar o Projeto
+
+### 1\. Instalação
+
+Primeiro, instale as dependências do projeto. Certifique-se de ter o Node.js (v18+) instalado.
+
+```bash
+npm install
+# Instalação das dependências de UI (HeroUI + Framer Motion)
+npm install @heroui/react framer-motion
+```
+
+### 2\. Ambiente de Desenvolvimento
+
+Para rodar o servidor local com *Hot Reloading*:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Acesse [http://localhost:3000](https://www.google.com/search?q=http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3\. Simulação de Produção (Importante para testar SSG)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+O comportamento de Cache/SSG é diferente em modo de desenvolvimento. Para ver o SSG real (páginas estáticas congeladas):
 
-## Learn More
+```bash
+npm run build
+npm start
+```
 
-To learn more about Next.js, take a look at the following resources:
+-----
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📚 Conceitos Abordados
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 1\. SSG (Static Site Generation) - `/ssg-blog`
 
-## Deploy on Vercel
+  * **Conceito:** O HTML é gerado **uma única vez** durante o comando `npm run build`.
+  * **Código:** `fetch` padrão (com cache).
+  * **Prova Real:** Observe o "Carimbo de Tempo" na página. Em produção, ele **não muda** mesmo que você atualize a página (F5), pois o HTML foi "congelado" no momento da construção.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 2\. SSR (Server-Side Rendering) - `/ssr-users`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+  * **Conceito:** O HTML é gerado pelo servidor **a cada requisição**.
+  * **Código:** `fetch(url, { cache: 'no-store' })`.
+  * **Prova Real:** O "Carimbo de Tempo" muda a cada atualização da página, e os dados são buscados novamente na API externa.
+
+### 3\. Client Components - `/client-counter`
+
+  * **Conceito:** Componentes que permitem interatividade (cliques, estado local, `useEffect`).
+  * **Código:** Uso da diretiva `'use client'` no topo do arquivo.
+  * **Nota:** Eles ainda são pré-renderizados no servidor (HTML inicial) e depois "hidratados" no navegador para se tornarem interativos.
+
+### 4\. Loading UI & Streaming
+
+  * **Conceito:** Feedback visual instantâneo enquanto o servidor processa dados demorados (SSR).
+  * **Arquivo:** `loading.tsx`.
+  * **UI:** Utilizamos o componente `Spinner` do **HeroUI**.
+
+### 5\. Arquitetura de Providers
+
+  * **Desafio:** O `layout.tsx` é um Server Component e não pode usar Context API diretamente.
+  * **Solução:** Criamos um componente `providers.tsx` (Client Component) para envolver a aplicação com o `HeroUIProvider`, permitindo o uso da biblioteca de UI em toda a aplicação.
+
+-----
+
+## 📂 Estrutura de Pastas (App Router)
+
+```text
+src/
+└── app/
+    ├── layout.tsx        # Layout Global (Server Component)
+    ├── page.tsx          # Home Page (Menu)
+    ├── loading.tsx       # UI de Carregamento Global (HeroUI Spinner)
+    ├── providers.tsx     # Wrapper para Contextos (HeroUI)
+    ├── ssg-blog/         # Rota para exemplo SSG
+    │   └── page.tsx
+    ├── ssr-users/        # Rota para exemplo SSR
+    │   └── page.tsx
+    └── client-counter/   # Rota para exemplo Client Component
+        └── page.tsx
+```
+
+-----
+
+## 📝 Exercício Sugerido
+
+1.  Rode o projeto com `npm run build` e `npm start`.
+2.  Vá para a página **SSG (Blog)** e anote o horário gerado. Dê refresh 5 vezes. O horário mudou? (Não deve mudar).
+3.  Vá para a página **SSR (Users)** e anote o horário. Dê refresh. O horário mudou? (Sim, deve mudar).
+4.  Tente adicionar um `console.log('Onde estou?')` no componente `Home`. Procure a mensagem no console do navegador. Você a encontrou? (Não deve encontrar, pois Server Components rodam apenas no terminal do servidor).
+
+-----
+
+Desenvolvido para a aula de **Desenvolvimento Web Moderno**.
